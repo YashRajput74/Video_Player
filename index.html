@@ -4,12 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Player</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/node_modules/video.js/dist/video-js.css">
 </head>
 <body>
-    <video width="320px" controls loop muted draggable="true">
-        
-        <source src="./VID_20211022_173950.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    <header>
+        <img src="" alt="logo">
+        <nav>
+            <ul>
+                <li>All</li>
+                <li>New song</li>
+                <li>Coming soon</li>
+                <li>Trending</li>
+                <li>Live</li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div id="video-container">
+            <video id="my-video" class="video-js vjs-default-skin" controls preload="auto">
+                <source src="./video/everest.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+        </div>
+        <div class="videoContainer2">
+            <video id="myVideo2" class="video-js vjs-default-skin" controls preload="auto">
+                <source src="./video/seagulls.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+        </div>
+    </main>
+    <script src="/node_modules/video.js/dist/video.min.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>

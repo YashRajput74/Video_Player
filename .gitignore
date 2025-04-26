@@ -29,3 +29,6 @@ dist-ssr
 *.avi
 *.mkv
 *.flv
+
+# Ignore a specific directory
+video/
