@@ -11,14 +11,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     player.ready(()=>{
         const controlBar=player.getChild('controlBar');
-        const customButton=player.controlBar.el().appendChild(document.createElement('div'));
-        customButton.className='vjs-control vjs-button custom-settings-button';
-        customButton.setAttribute("role","button");
-        customButton.setAttribute("tabindex","0");
-        customButton.setAttribute("aria-label","Custom Settings ");
-        customButton.innerHTML=`<span class="vjs-icon-placeholder">S</span>`;
-        customButton.addEventListener("click",()=>{
-            alert("clicked!")
+        const speedButton=document.createElement('div');
+        speedButton.className='vjs-control vjs-button custom-speed-button';
+        speedButton.setAttribute("role","button");
+        speedButton.setAttribute('aria-label',"Playback Speed");
+        speedButton.innerHTML="Speed";
+        player.controlBar.el().appendChild(speedButton);
+        const speedDropdown=document.createElement("ul");
+        speedDropdown.className="speed-dropdown";
+        speedDropdown.style.display="none";
+        ['1','1.25','1.5'].forEach(speed=>{
+            const option=document.createElement("li");
+            option.textContent=`${speed}x`;
+            option.addEventListener('click',()=>{
+                player.playbackRate(parseFloat(speed));
+                speedDropdown.style.display="none";
+            });
+            speedDropdown.appendChild(option);
+        });
+        speedButton.appendChild(speedDropdown);
+        speedButton.addEventListener("click",()=>{
+            speedDropdown.style.display=speedDropdown.style.display==="none"?"block":"none";
         })
     })
     const player2=videojs('myVideo2',{
