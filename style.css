@@ -67,3 +67,11 @@ main{
 .vjs-text-track-display {
     display: none;
 }
+.custom-settings-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 18px;
+}
