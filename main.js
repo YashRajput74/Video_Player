@@ -2,58 +2,73 @@ import videojs from "video.js";
 
 import 'video.js/dist/video-js.css'
 
+import 'videojs-youtube'
+
 document.addEventListener('DOMContentLoaded', () => {
+    const playlist = [
+        { src: "https://www.youtube.com/watch?v=S980-z1qx3g", title: "title3" },
+        { src: "https://www.youtube.com/watch?v=L7kF4MXXCoA", title: "title1" },
+        { src: "https://www.youtube.com/watch?v=iZLLrr3z7N0", title: "title2" }
+    ];
+    let currentVideoIndex=0;
+    
     const player = videojs('my-video', {
-        autoplay: true,
+        autoplay: false,
         controls: true,
         loop: false,
         muted: false,
+        techOrder: ['youtube'],
+        sources: [{
+            type: "video/youtube",
+            src: playlist[currentVideoIndex].src
+        }]
     });
-    const playlist=[
-        {src:"./video/bird_video.mp4",title:"title1"},
-        {src:"./video/everest.mp4",title:"title2"},
-        {src:"./video/sea_video.mp4",title:"title3"},
-        {src:"./video/seagulls.mp4",title:"title4"}
-    ]
-    let currentVideoIndex=0;
+    player.volume(0.5);
     function playNextVideo(){
         currentVideoIndex=(currentVideoIndex+1)%playlist.length;
-        player.src({type:"video/mp4",src: playlist[currentVideoIndex].src});
+        player.src({type:"video/youtube",src: playlist[currentVideoIndex].src});
         player.play();
     }
-    player.src({ type: 'video/mp4', src: playlist[currentVideoIndex].src });
     player.on("ended",playNextVideo)
-        const controlBar=player.getChild('controlBar');
-        const speedButton=document.createElement('div');
-        speedButton.className='vjs-control vjs-button custom-speed-button';
-        speedButton.setAttribute("role","button");
-        speedButton.setAttribute('aria-label',"Playback Speed");
-        speedButton.innerHTML="Speed";
-        player.controlBar.el().appendChild(speedButton);
-        const speedDropdown=document.createElement("ul");
-        speedDropdown.className="speed-dropdown";
-        speedDropdown.style.display="none";
-        ['1','1.25','1.5'].forEach(speed=>{
-            const option=document.createElement("li");
-            option.textContent=`${speed}x`;
-            option.addEventListener('click',()=>{
-                player.playbackRate(parseFloat(speed));
-                speedDropdown.style.display="none";
-            });
-            speedDropdown.appendChild(option);
+    const controlBar=player.getChild('controlBar');
+    const speedButton=document.createElement('div');
+    speedButton.className='vjs-control vjs-button custom-speed-button';
+    speedButton.setAttribute("role","button");
+    speedButton.setAttribute('aria-label',"Playback Speed");
+    speedButton.innerHTML="Speed";
+    player.controlBar.el().appendChild(speedButton);
+    const speedDropdown=document.createElement("ul");
+    speedDropdown.className="speed-dropdown";
+    speedDropdown.style.display="none";
+    ['1','1.25','1.5'].forEach(speed=>{
+        const option=document.createElement("li");
+        option.textContent=`${speed}x`;
+        option.addEventListener('click',()=>{
+            player.playbackRate(parseFloat(speed));
+            speedDropdown.style.display="none";
         });
-        speedButton.appendChild(speedDropdown);
-        speedButton.addEventListener("click",()=>{
-            speedDropdown.style.display=speedDropdown.style.display==="none"?"block":"none";
-        })
-   /*  const player2=videojs('myVideo2',{
-        autoplay: true,
-        controls: true,
-        loop: true,
-        muted: false,
-    })
-    document.body.addEventListener('click', () => {
-        player.pause();
+        speedDropdown.appendChild(option);
     });
-    //with ambient mode you cant play any other video while this is on... */
+    speedButton.appendChild(speedDropdown);
+    speedButton.addEventListener("click",()=>{
+        speedDropdown.style.display=speedDropdown.style.display==="none"?"block":"none";
+    })
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const player = videojs('my-video');
+    
+    player.on('userinactive', () => {
+        const iframeBlocker = document.querySelector('.vjs-iframe-blocker');
+        if (iframeBlocker) {
+            iframeBlocker.style.display = 'none';
+        }
+    });
+
+    player.on('useractive', () => {
+        const iframeBlocker = document.querySelector('.vjs-iframe-blocker');
+        if (iframeBlocker) {
+            iframeBlocker.style.display = 'none';
+        }
+    });
 });
