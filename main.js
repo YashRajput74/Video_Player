@@ -1,4 +1,5 @@
-import videojs from "video.js";
+import "./scripts"
+/* import videojs from "video.js";
 import 'video.js/dist/video-js.css'
 import 'videojs-youtube'
 import { playlist, themePalette } from "./data";
@@ -40,21 +41,45 @@ function renderSidebar(){
             </div>
             <div class="playlistDisplay">
                 <!-- Playlist content goes here -->
+                <ul id="playlist">
+                <!-- Dynamically filled with playlist videos -->
+                </ul>
             </div>`;
 }
+function displayPlaylist() {
+    const playlistContainer = document.getElementById('playlist');
+    playlist.forEach(video => {
+        const listItem = document.createElement('li');
+        listItem.classList.add('playlist-item');
+        listItem.innerHTML = `
+            <img src="https://img.youtube.com/vi/${getVideoID(video.src)}/maxresdefault.jpg" alt="${video.title}" class="playlist-thumbnail">
+            <span class="playlist-title">${video.title}</span>
+        `;
+        playlistContainer.appendChild(listItem);
+    });
+}
+
+// Extract the video ID from the YouTube URL
+function getVideoID(url) {
+    const regex = /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]*\/\S+\/|\S+\?v=|v\/|e\/|watch\?v%3D|\S*\?v%3D|\S+%2F|.*?\/videos\/)([^""'&?=\s]+))/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+}
+
 function renderPage(){
     document.querySelector("header").innerHTML=renderHeader();
     document.querySelector("main").innerHTML=renderMainSection();
     document.querySelector("#sidebar").innerHTML=renderSidebar();
+    displayPlaylist();
 }
 function initializeVideoPlayer(){
 
     let currentVideoIndex=0;
     
     const player = videojs('my-video', {
-        autoplay: false,
+        autoplay: true,
         controls: true,
-        loop: false,
+        loop: true,
         muted: false,
         techOrder: ['youtube'],
         sources: [{
@@ -130,4 +155,5 @@ function renderThemes() {
 function changeBackground(gradient) {
     document.body.style.background = gradient;
     document.getElementById('themesDropdown').style.display = 'none';
-}
+} */
+/*now will try to add local videos...if they can be uploaded then well and good...started studying */
