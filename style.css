@@ -1,27 +1,70 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-body{
+
+:root {
+    --bckgrnd-color: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+    --header-bckgrnd: linear-gradient(145deg, #ffffff, #dcdcdc);
+    --header-color: #000;
+    --sidebar-bckgrnd: linear-gradient(145deg, #ffffff, #eaeaea);
+    --main-bckgrnd: rgba(255, 255, 255, 0.6);
+    --primary-color: #333;
+    --accent-color: #007BFF;
+    --btn-bckgrnd: linear-gradient(145deg, #ffffff, #e0e0e0);
+    --btn-text: #000;
+    --playlist-bckgrnd: #fff;
+    --playlist-item-hover: #eee;
+    --input-bckgrnd: #fff;
+    --input-text: #000;
+    --shadow: rgba(0, 0, 0, 0.2);
+    --border-color: #ccc;
+}
+/* 
+:root {
+    --bckgrnd-color: linear-gradient(135deg, #3a3a3a, #1c1c1c);
+    --header-bckgrnd: linear-gradient(145deg, #4b4b4b, #2c2c2c);
+    --header-color: #fff;
+    --sidebar-bckgrnd: linear-gradient(145deg, #4b4b4b, #2c2c2c);
+    --main-bckgrnd: rgba(0, 0, 0, 0.2);
+    --primary-color: #eee;
+    --accent-color: #0ff;
+    --btn-bckgrnd: linear-gradient(145deg, #5d5d5d, #2e2e2e);
+    --btn-text: #eee;
+    --playlist-bckgrnd: #222;
+    --playlist-item-hover: #444;
+    --input-bckgrnd: #333;
+    --input-text: #fff;
+    --shadow: rgba(255, 255, 255, 0.05);
+    --border-color: #888;
+} */
+
+body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #4E2C7E, #6A4C9C, #F39C8E);
+    background: var(--bckgrnd-color);
     background-attachment: fixed;
     display: grid;
     grid-template-columns: 7fr 3fr;
     grid-template-rows: 10vh 90vh;
     grid-template-areas: "header header" "main sidebar";
     height: 100vh;
+    color: var(--primary-color);
 }
+
 header {
     grid-area: header;
-    color: white;
+    background: var(--header-bckgrnd);
+    color: var(--header-color);
     padding: 1rem 5vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.6); 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow:
+        inset 0 1px 2px var(--shadow),
+        0 2px 8px var(--shadow);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 header img {
@@ -37,12 +80,12 @@ header div {
 header div span {
     font-size: 1.8rem;
     font-weight: bold;
-    color: #fff;
+    color: var(--header-color);
     margin-left: 10px;
 }
 
 nav {
-    width: 40%;
+    width: 30%;
 }
 
 nav ul {
@@ -60,69 +103,32 @@ nav ul li {
 
 nav ul li:hover {
     border-radius: 1vh;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
-.theme-dropdown {
-    display: none;  
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.7); 
-    list-style-type: none;
-    margin-top: 3vh;
-    padding: 0;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-    z-index: 10;
-    width: 200px;
-}
-
-.theme-dropdown li {
-    padding: 10px;
-    cursor: pointer;
-    color: white;
-    font-size: 1.2rem;
-    text-align: center;
-    transition: background-color 0.3s ease;
-}
-
-.theme-dropdown li:hover {
-    background-color: rgba(255, 255, 255, 0.1); 
-}
-
-#themeBtn {
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 5px;
-    color: white;
-    font-size: 1.4rem;
-    transition: background-color 0.3s ease;
-}
-
-#themeBtn:hover {
-    background-color: rgba(0, 0, 0, 0.2);
-}
-
-/* Main content area */
 main {
     grid-area: main;
     padding: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.2); 
+    flex-direction: column;
+    background: var(--main-bckgrnd);
 }
 
 #video-container {
     width: 100%;
     max-width: 800px;
     height: 60vh;
-    border: 1px solid white;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    background: var(--header-bckgrnd);
+    border: 1px solid var(--border-color);
+    box-shadow:
+        inset 0 2px 4px var(--shadow),
+        0 4px 12px var(--shadow);
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: black;
 }
 
 .video-js {
@@ -132,7 +138,6 @@ main {
     border-radius: 8px;
 }
 
-/* Speed control dropdown */
 .custom-speed-button {
     display: flex;
     align-items: center;
@@ -140,52 +145,87 @@ main {
     font-size: 14px;
     cursor: pointer;
     padding: 0 18px;
-    color: white;
+    color: var(--btn-text);
     border-radius: 5px;
-    transition: background-color 0.3s ease;
 }
 
 .speed-dropdown {
     position: absolute;
-    background: #fff;
     list-style-type: none;
-    color: #222;
     margin: 0;
     padding: 1px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: none;
     right: 0;
     top: 30px;
     border-radius: 5px;
-}
-
-iframe{
-    border-radius: 8px;
+    background: var(--header-bckgrnd);
+    border: 1px solid var(--border-color);
+    color: var(--btn-text);
+    box-shadow: 0 0 10px var(--shadow), 0 0 10px #000 inset;
 }
 
 .speed-dropdown li {
-    padding: 10px 20px;
+    padding: 7px 10px;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
 .speed-dropdown li:hover {
-    background-color: #f0f0f0;
+    background: var(--playlist-item-hover);
 }
 
-/* Sidebar styling */
+iframe {
+    border-radius: 8px;
+}
+
+main>div:nth-child(2) {
+    padding: 1rem;
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 1rem;
+    max-width: 800px;
+}
+
+.volume-knob {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(var(--border-color), var(--primary-color));
+    border: 2px solid var(--border-color);
+    box-shadow: inset -2px -2px 5px #000, inset 2px 2px 5px var(--border-color);
+    position: relative;
+    cursor: pointer;
+}
+
+.volume-knob .indicator {
+    width: 6px;
+    height: 20px;
+    background: var(--accent-color);
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 3px;
+}
+
 #sidebar {
     grid-area: sidebar;
     padding: 2rem;
-    background-color: rgba(0, 0, 0, 0.2);
+    background: var(--sidebar-bckgrnd);
+    box-shadow:
+        inset 0 1px 2px var(--shadow),
+        0 2px 8px var(--shadow);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    border-left: 1px solid white;
-    color: white;
+    border-left: 1px solid var(--border-color);
+    color: var(--primary-color);
 }
 
-#sidebar>div:nth-child(1){
+#sidebar>div:nth-child(1) {
     margin-bottom: 2vh;
     font-size: 1.2rem;
 }
@@ -194,9 +234,9 @@ iframe{
     padding: 10px;
     margin-bottom: 1rem;
     border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: #333;
-    color: white;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bckgrnd);
+    color: var(--input-text);
     font-size: 1rem;
     width: 100%;
     box-sizing: border-box;
@@ -204,9 +244,10 @@ iframe{
 
 #sidebar .submitLink {
     padding: 12px 18px;
-    background-color: #006F89;
-    color: white;
-    border: none;
+    background: var(--btn-bckgrnd);
+    border: 1px solid var(--border-color);
+    color: var(--btn-text);
+    text-shadow: 0 -1px 1px #000;
     border-radius: 5px;
     cursor: pointer;
     font-size: 1rem;
@@ -214,18 +255,18 @@ iframe{
 }
 
 #sidebar .submitLink:hover {
-    background-color: #004E64;
+    background: linear-gradient(145deg, #777, #3a3a3a);
 }
 
 .playlistDisplay {
     margin-top: 2rem;
     padding: 10px;
-    background-color: #222;
+    background-color: var(--playlist-bckgrnd);
     border-radius: 8px;
-    color: white;
+    color: var(--primary-color);
     overflow-y: auto;
     max-height: 500px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px var(--shadow);
     scrollbar-width: none;
 }
 
@@ -238,13 +279,13 @@ iframe{
     display: flex;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid var(--border-color);
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .playlist-item:hover {
-    background-color: #444;
+    background-color: var(--playlist-item-hover);
 }
 
 .playlist-thumbnail {
@@ -256,5 +297,5 @@ iframe{
 
 .playlist-title {
     font-size: 1.2rem;
-    color: white;
+    color: var(--primary-color);
 }

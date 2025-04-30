@@ -1,21 +1,17 @@
-import "./scripts"
-/* import videojs from "video.js";
+import videojs from "video.js";
 import 'video.js/dist/video-js.css'
 import 'videojs-youtube'
-import { playlist, themePalette } from "./data";
+import { playlist} from "./data";
 function renderHeader(){
     return `
         <div>
-            <img src="/image-removebg-preview.png" alt="logo">
+            <img src="/logo_white_video_player-removebg-preview.png" alt="logo">
             <span>PlayNest</span>
         </div>
         <nav>
             <ul>
                 <li>Upload local videos</li>
-                <li id="themeBtn">Themes
-                    <ul id="themesDropdown" class="theme-dropdown">
-                    </ul>
-                </li>
+                
                 <li>Settings</li>
             </ul>
             
@@ -27,7 +23,13 @@ function renderMainSection(){
                 <video id="my-video" class="video-js vjs-default-skin" controls preload="auto">
                     Your browser does not support HTML5 video.
                 </video>
-            </div>`;
+            </div>
+            <div>
+                <div class="volume-knob" id="volume-knob">
+                    <div class="indicator"></div>
+                </div>
+            </div>
+            `;
 }
 function renderSidebar(){
     return `
@@ -77,7 +79,7 @@ function initializeVideoPlayer(){
     let currentVideoIndex=0;
     
     const player = videojs('my-video', {
-        autoplay: true,
+        autoplay: false,
         controls: true,
         loop: true,
         muted: false,
@@ -121,39 +123,4 @@ function initializeVideoPlayer(){
     renderPage();
     initializeVideoPlayer();
     renderThemes();
-    addThemeDropdownToggle();
 });
-
-function addThemeDropdownToggle() {
-    const themeBtn = document.getElementById('themeBtn');
-    const themesDropdown = document.getElementById('themesDropdown');
-
-    themeBtn.addEventListener('click', function(event) {
-        event.stopPropagation();
-        themesDropdown.style.display = themesDropdown.style.display === 'block' ? 'none' : 'block';
-    });
-
-    document.addEventListener('click', function(event) {
-        if (!themeBtn.contains(event.target) && !themesDropdown.contains(event.target)) {
-            themesDropdown.style.display = 'none';
-        }
-    });
-}
-
-function renderThemes() {
-    const dropdown = document.getElementById('themesDropdown');
-    themePalette.forEach((gradient, index) => {
-        const themeItem = document.createElement('li');
-        themeItem.style.cursor = 'pointer';
-        themeItem.innerHTML = `Theme ${index + 1}`;
-        themeItem.style.background = gradient;
-        themeItem.addEventListener('click', () => changeBackground(gradient));
-        dropdown.appendChild(themeItem);
-    });
-}
-
-function changeBackground(gradient) {
-    document.body.style.background = gradient;
-    document.getElementById('themesDropdown').style.display = 'none';
-} */
-/*now will try to add local videos...if they can be uploaded then well and good...started studying */
