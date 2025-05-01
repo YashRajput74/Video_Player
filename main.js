@@ -1,11 +1,10 @@
+import { playlist } from "./data";
 import videojs from "video.js";
 import 'video.js/dist/video-js.css'
-import 'videojs-youtube'
-import { playlist} from "./data";
 function renderHeader(){
     return `
         <div>
-            <img src="/logo_white_video_player-removebg-preview.png" alt="logo">
+            <img src="/image-removebg-preview.png" alt="logo">
             <span>PlayNest</span>
         </div>
         <nav>
@@ -18,19 +17,7 @@ function renderHeader(){
         </nav>
     `
 };
-function renderMainSection(){
-    return `<div id="video-container">
-                <video id="my-video" class="video-js vjs-default-skin" controls preload="auto">
-                    Your browser does not support HTML5 video.
-                </video>
-            </div>
-            <div>
-                <div class="volume-knob" id="volume-knob">
-                    <div class="indicator"></div>
-                </div>
-            </div>
-            `;
-}
+
 function renderSidebar(){
     return `
             <div>
@@ -40,6 +27,7 @@ function renderSidebar(){
             <label for="inputURL"></label>
             <input type="text" id="inputURL" placeholder="Paste the link here">
             <button class="submitLink">Submit</button>
+            <button id="addVideo">Add video</button>
             </div>
             <div class="playlistDisplay">
                 <!-- Playlist content goes here -->
@@ -48,79 +36,87 @@ function renderSidebar(){
                 </ul>
             </div>`;
 }
-function displayPlaylist() {
-    const playlistContainer = document.getElementById('playlist');
-    playlist.forEach(video => {
-        const listItem = document.createElement('li');
-        listItem.classList.add('playlist-item');
-        listItem.innerHTML = `
-            <img src="https://img.youtube.com/vi/${getVideoID(video.src)}/maxresdefault.jpg" alt="${video.title}" class="playlist-thumbnail">
-            <span class="playlist-title">${video.title}</span>
-        `;
-        playlistContainer.appendChild(listItem);
-    });
-}
-
-// Extract the video ID from the YouTube URL
-function getVideoID(url) {
-    const regex = /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]*\/\S+\/|\S+\?v=|v\/|e\/|watch\?v%3D|\S*\?v%3D|\S+%2F|.*?\/videos\/)([^""'&?=\s]+))/;
-    const match = url.match(regex);
-    return match ? match[1] : null;
-}
 
 function renderPage(){
     document.querySelector("header").innerHTML=renderHeader();
-    document.querySelector("main").innerHTML=renderMainSection();
     document.querySelector("#sidebar").innerHTML=renderSidebar();
-    displayPlaylist();
 }
-function initializeVideoPlayer(){
 
+function videoPlayer(){
     let currentVideoIndex=0;
-    
-    const player = videojs('my-video', {
-        autoplay: false,
-        controls: true,
-        loop: true,
-        muted: false,
-        techOrder: ['youtube'],
-        sources: [{
-            type: "video/youtube",
-            src: playlist[currentVideoIndex].src
-        }]
-    });
-    player.volume(0.5);
-    function playNextVideo(){
-        currentVideoIndex=(currentVideoIndex+1)%playlist.length;
-        player.src({type:"video/youtube",src: playlist[currentVideoIndex].src});
-        player.play();
-    }
-    player.on("ended",playNextVideo)
-    const controlBar=player.getChild('controlBar');
-    const speedButton=document.createElement('div');
-    speedButton.className='vjs-control vjs-button custom-speed-button';
-    speedButton.setAttribute("role","button");
-    speedButton.setAttribute('aria-label',"Playback Speed");
-    speedButton.innerHTML="Speed";
-    player.controlBar.el().appendChild(speedButton);
-    const speedDropdown=document.createElement("ul");
-    speedDropdown.className="speed-dropdown";
-    speedDropdown.style.display="none";
-    ['1','1.25','1.5'].forEach(speed=>{
-        const option=document.createElement("li");
-        option.textContent=`${speed}x`;
-        option.addEventListener('click',()=>{
-            player.playbackRate(parseFloat(speed));
-            speedDropdown.style.display="none";
+    function init(){
+        if (currentVideoIndex >= playlist.length) return;
+        console.log(currentVideoIndex);
+
+        const videoContainer=document.createElement("div");
+        videoContainer.className="video-container";
+        
+        const videoTitle=document.createElement("p");
+        videoTitle.textContent=`${playlist[currentVideoIndex].title}`;
+        
+        const videoElement=document.createElement("video");
+        videoElement.id=`my-video-${currentVideoIndex}`;
+        videoElement.className="video-js"
+        videoElement.classList.add("vjs-default-skin");
+        videoElement.setAttribute("controls","");
+        videoElement.setAttribute("preload","auto");
+        
+        const sourceElement=document.createElement("source");
+        sourceElement.src=playlist[currentVideoIndex].src;
+        sourceElement.type="video/mp4";
+        
+        videoElement.appendChild(sourceElement);
+        videoContainer.appendChild(videoTitle);
+        videoContainer.appendChild(videoElement);
+        
+        document.querySelector("main").appendChild(videoContainer);
+
+        const player = videojs(videoElement.id, {
+            autoplay: false,
+            controls: true,
+            loop: true,
+            muted: false,
         });
-        speedDropdown.appendChild(option);
-    });
-    speedButton.appendChild(speedDropdown);
-    speedButton.addEventListener("click",()=>{
-        speedDropdown.style.display=speedDropdown.style.display==="none"?"block":"none";
-    })
-}document.addEventListener('DOMContentLoaded', () => {
+        player.volume(0.5);
+        player.play();
+        const controlBar=player.getChild('controlBar');
+        const speedButton=document.createElement('div');
+        speedButton.className='vjs-control vjs-button custom-speed-button';
+        speedButton.setAttribute("role","button");
+        speedButton.setAttribute('aria-label',"Playback Speed");
+        speedButton.innerHTML="Speed";
+        player.controlBar.el().appendChild(speedButton);
+        const speedDropdown=document.createElement("ul");
+        speedDropdown.className="speed-dropdown";
+        speedDropdown.style.display="none";
+        ['1','1.25','1.5'].forEach(speed=>{
+            const option=document.createElement("li");
+            option.textContent=`${speed}x`;
+            option.addEventListener('click',()=>{
+                player.playbackRate(parseFloat(speed));
+                speedDropdown.style.display="none";
+            });
+            speedDropdown.appendChild(option);
+        });
+        speedButton.appendChild(speedDropdown);
+        speedButton.addEventListener("click",()=>{
+            speedDropdown.style.display=speedDropdown.style.display==="none"?"block":"none";
+        });
+        console.log(currentVideoIndex);
+        
+        currentVideoIndex++;
+        console.log(currentVideoIndex);
+
+    }
+    return {
+        init
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
     renderPage();
-    initializeVideoPlayer();
-    renderThemes();
+    const playerController=videoPlayer();
+    document.getElementById("addVideo").addEventListener("click",()=>{
+        playerController.init();
+    })
 });
