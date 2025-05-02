@@ -46,23 +46,31 @@ function videoPlayer(){
     let currentVideoIndex=0;
     function init(){
         if (currentVideoIndex >= playlist.length) return;
-        console.log(currentVideoIndex);
+
+        let currentVideo=playlist[currentVideoIndex];
+        let title=currentVideo.title;
+        let src=currentVideo.src;
+        let config=currentVideo.config||{};
+
+        let autoplay = config.autoplay !== undefined ? config.autoplay : false;
+        let controls = config.controls !== undefined ? config.controls : true;
+        let loop = config.loop !== undefined ? config.loop : false;
+        let muted = config.muted !== undefined ? config.muted : false;
 
         const videoContainer=document.createElement("div");
         videoContainer.className="video-container";
         
         const videoTitle=document.createElement("p");
-        videoTitle.textContent=`${playlist[currentVideoIndex].title}`;
+        videoTitle.textContent=title;
         
         const videoElement=document.createElement("video");
         videoElement.id=`my-video-${currentVideoIndex}`;
         videoElement.className="video-js"
         videoElement.classList.add("vjs-default-skin");
-        videoElement.setAttribute("controls","");
         videoElement.setAttribute("preload","auto");
         
         const sourceElement=document.createElement("source");
-        sourceElement.src=playlist[currentVideoIndex].src;
+        sourceElement.src=src;
         sourceElement.type="video/mp4";
         
         videoElement.appendChild(sourceElement);
@@ -72,13 +80,13 @@ function videoPlayer(){
         document.querySelector("main").appendChild(videoContainer);
 
         const player = videojs(videoElement.id, {
-            autoplay: false,
-            controls: true,
-            loop: true,
-            muted: false,
+            autoplay: autoplay,
+            controls: controls,
+            loop: loop,
+            muted: muted,
         });
         player.volume(0.5);
-        player.play();
+        if(autoplay) player.play();
         const controlBar=player.getChild('controlBar');
         const speedButton=document.createElement('div');
         speedButton.className='vjs-control vjs-button custom-speed-button';
@@ -102,10 +110,8 @@ function videoPlayer(){
         speedButton.addEventListener("click",()=>{
             speedDropdown.style.display=speedDropdown.style.display==="none"?"block":"none";
         });
-        console.log(currentVideoIndex);
         
         currentVideoIndex++;
-        console.log(currentVideoIndex);
 
     }
     return {
@@ -116,7 +122,6 @@ function videoPlayer(){
 document.addEventListener('DOMContentLoaded', () => {
     renderPage();
     const playerController=videoPlayer();
-    document.getElementById("addVideo").addEventListener("click",()=>{
-        playerController.init();
-    })
+    playerController.init();        
+    playerController.init();
 });
