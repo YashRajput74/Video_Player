@@ -83,7 +83,12 @@ function videoPlayer(){
             autoplay: autoplay,
             controls: controls,
             loop: loop,
-            muted: muted,
+            muted: muted,            
+            preload: config.preload || 'auto',
+            poster: config.poster || '',
+            playbackRates: config.playbackRates || [1],
+            volume: config.volume !== undefined ? config.volume : 0.5,
+            fluid: config.fluid !== undefined ? config.fluid : false
         });
         player.volume(0.5);
         if(autoplay) player.play();
@@ -119,9 +124,41 @@ function videoPlayer(){
     }
 }
 
+function renderPlaylistItem(video,index){
+    const title=video.title;
+    const text=encodeURIComponent(title);
+    const playlistItem=document.createElement("li");
+    playlistItem.className="playlist-item";
+    const thumbnail=document.createElement("img");
+    thumbnail.src=`https://via.placeholder.com/50x50.png?text=${text}`;
+    thumbnail.alt=`${title} img`;
+    thumbnail.className = "playlist-thumbnail";
+
+    const titleElement=document.createElement("span");
+    titleElement.className="playlist-title";
+    titleElement.textContent=title;
+
+    playlistItem.appendChild(thumbnail);
+    playlistItem.appendChild(titleElement);
+
+    playlistItem.addEventListener("click", () => {
+        const targetVideo = document.getElementById(`my-video-${index}`);
+        if (targetVideo) {
+            targetVideo.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    });
+
+    return playlistItem;
+
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     renderPage();
     const playerController=videoPlayer();
-    playerController.init();        
-    playerController.init();
+    for(let i=0;i<playlist.length;i++){
+        playerController.init();
+        const video = playlist[i];
+        document.querySelector("#playlist").appendChild(renderPlaylistItem(playlist[i], i));
+
+    }       
 });

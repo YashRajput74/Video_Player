@@ -12,13 +12,13 @@ export const playlist=[
         muted: false
       } },
     { src: "./video/sea_video.mp4", title: "Beach",config: {
-        autoplay: true,
+        autoplay: false,
         controls: true,
         loop: false,
         muted: false
       } },
     { src: "./video/seagulls.mp4", title: "Seagulls",config: {
-        autoplay: true,
+        autoplay: false,
         controls: true,
         loop: false,
         muted: false
